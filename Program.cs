@@ -1,15 +1,17 @@
 using GisParser.Constants;
+using Microsoft.Extensions.Hosting;
+using System.Data;
 
 namespace GisParser
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             RegisterServices(builder);
             var app = builder.Build();
-            Configure(app);
+            await Configure(app);
 
             app.MapGet("/", () => "Hello World!");
             app.Run();
@@ -25,19 +27,30 @@ namespace GisParser
             });
             services.AddIdentity<User, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
+//            services.AddDatabaseDeveloperPageExceptionFilter();
         }
-        public static void Configure(WebApplication app)
+        public static async Task Configure(WebApplication app)
         {
             if (app.Environment.IsDevelopment())
             {
                 using var scope = app.Services.CreateScope();
-                var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                db.Database.EnsureCreated();
-                var UM = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-                var RM = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                var InitDB = new DataInitializer(db, UM, RM);
-                InitDB.InitUser(UserConstants.UserLists);
-
+                {
+                    var services = scope.ServiceProvider;
+                    try
+                    {
+                        var db = services.GetRequiredService<ApplicationDbContext>();
+                        var UM = services.GetRequiredService<UserManager<User>>();
+                        var RM = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                        //db.Database.EnsureCreated();
+                        db.Database.Migrate();
+                        await DataInitializer.InitUser(db, UM, RM, UserConstants.UserLists);
+                    }
+                    catch (Exception ex)
+                    {
+                        var logger = services.GetRequiredService<ILogger<Program>>();
+                        logger.LogError(ex, "An error occured during migration");
+                    }
+                }
             }
         }
     }
