@@ -1,4 +1,6 @@
-﻿namespace GisParser.Constants
+﻿using GisParser.Data;
+
+namespace GisParser.Constants
 {
     public static class LocationConstants
     {
@@ -35,8 +37,8 @@
     {
         public static List<UserDto> UserLists = new List<UserDto>
         {
-            new UserDto("admin", "Pp_123", "admin"),
-            new UserDto("user", "Uu_123", "user" )
+            new UserDto("admin", "Pp_123", "admin","",null),
+            new UserDto("user", "Uu_123", "user" ,"",null)
         };
     }
 }
