@@ -34,7 +34,7 @@ public class DataInitializer
                 {
                     await userManager.AddToRoleAsync(user, userDTO.Role);
                 }
-                userManager.Users.ToString();
+                //userManager.Users.ToString();
             }
         }
     }

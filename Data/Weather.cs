@@ -1,6 +1,7 @@
 ﻿namespace GisParser.Data
 {
     [Index("Date")]
+    [Index("MeteorologicalStationId")]
     public class Weather                                                // Дневник погоды
     {
         public Weather() { }

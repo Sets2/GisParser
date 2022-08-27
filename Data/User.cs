@@ -21,7 +21,7 @@ public class UserDto {
     public UserDto(string userName, string password, string role, string concurrencyStamp, List<string> roles) {
         UserName = userName;
         Password = password;
-        Role = "";
+        Role = role;
         ConcurrencyStamp = concurrencyStamp;
         Roles = roles;
     }

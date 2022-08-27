@@ -4,6 +4,7 @@ namespace GisParser.Constants
 {
     public static class LocationConstants
     {
+        
         public static string RussiaCountryValue = "156";
         public static string StavropolKrayRegionValue = "284";
 
@@ -40,5 +41,10 @@ namespace GisParser.Constants
             new UserDto("admin", "Pp_123", "admin","",null),
             new UserDto("user", "Uu_123", "user" ,"",null)
         };
+    }
+
+    public static class CommonConstants
+    {
+        public static int PGSize = 5;
     }
 }
